@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TODO</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+</head>
+<body>
+
+    <div id="app">
+        <div id="todo-list-example" class="container">
+           <div class="row">
+               <div class="col-md-6 mx-auto">
+                   <h1 class="text-center">TODO LIST</h1>
+                   <form v-on:submit.prevent="addNewTodo">
+                       <label for="taskname">Task Name</label>
+                       <input type="text" v-model="newTodoText" id="taskname" class="form-control" placeholder="Add New Task">
+                       <button class="btn btn-success btn-block mt-3">Submit</button>
+                   </form>
+
+                   <table class="table mt-3">
+                       <tr is="todo-item" v-for="(todo,index) in todos" v-bind:key ="todo.id" v-bind:title="todo.title" v-on:remove="todos.splice(index,1)"></tr>
+                   </table>
+               </div>
+           </div>
+        </div>
+    </div>
+
+
+<script>
+    var MyComponent =Vue.extend({
+        template:`
+        <my-component v-for="(item,index) in items"
+        v-bind:item="item"
+        v-bind:index="index"
+        v-bind:key="item.id"
+        ></my-component>`
+    })
+
+    Vue.component('my-component',MyComponent)
+    Vue.component('todo-item',{
+        template:`
+        <tr>
+            <td class="text-left">
+                {{title}}
+                </td>
+                <td class="text-right">
+                    <button v-on:click="$emit('remove')" class="btn btn-danger">Remove</button>
+                    </td>
+            </tr>
+            `,
+            props:['title']
+    })
+
+    new Vue({
+        el:'#todo-list-example',
+        data:{
+            newTodoText:'',
+            todos:[],
+            nextTodoId:1
+        },
+        methods:{
+            addNewTodo:function(){
+                this.todos.push({
+                    id:this.nextTodoId++,
+                    title:this.newTodoText
+                })
+                this.newTodoText =''
+            
+        }
+        }
+    })
+</script>
+ <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>   
+</body>
+</html>
